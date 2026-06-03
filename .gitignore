@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+*.xlsx
+*.csv
+!example_input.csv
+papers/
+cache/
+logs/
+.vscode/
+.idea/
+*.egg-info/
+dist/
