@@ -50,18 +50,20 @@ def download_main_pdf(doi: str, paper_dir: Path) -> Path | None:
 
     # Try scansci-pdf Python API
     try:
-        import scansci_pdf
-        result = scansci_pdf.download(
-            identifier=doi,
+        from scansci_pdf.sources import download as scansci_download
+        result = scansci_download(
+            doi,
             output_dir=str(paper_dir),
             scihub_enabled=True,
-            use_tor=False,
-            strategy="fastest",
+            use_vpnsci=False,
         )
-        if result and result.get("file_path"):
-            path = Path(result["file_path"])
+        if result.get("success") and result.get("file"):
+            path = Path(result["file"])
             if path.suffix == ".pdf" and path.stat().st_size > 10000:
-                if path != paper_pdf:
+                if path.parent != paper_dir:
+                    import shutil
+                    shutil.copy2(path, paper_pdf)
+                elif path != paper_pdf:
                     path.rename(paper_pdf)
                 return paper_pdf
     except ImportError:

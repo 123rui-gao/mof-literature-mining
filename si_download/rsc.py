@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from urllib.parse import urljoin
 
-from .batch_downloader import SI_EXTENSIONS
+from . import SI_EXTENSIONS
 
 
 def collect_links(doi: str, paper_dir: Path) -> dict[str, str]:

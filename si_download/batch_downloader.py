@@ -20,7 +20,6 @@ from pathlib import Path
 from . import acs, rsc, wiley, elsevier as elsevier_mod
 
 CHROME_BIN = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-SI_EXTENSIONS = {".pdf", ".doc", ".docx"}
 
 
 def publisher(doi: str) -> str:
