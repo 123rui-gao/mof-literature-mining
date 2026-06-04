@@ -44,13 +44,14 @@ Phase 2 uses Chrome at `C:\Program Files\Google\Chrome\Application\chrome.exe` f
 
 ### scansci-pdf Setup (Phase 2)
 
-Configure scansci-pdf before first use:
+Verify the scansci-pdf environment after installation:
 
 ```bash
-python -c "import scansci_pdf; scansci_pdf.setup()"
+pip install scansci-pdf
+scansci-pdf check
 ```
 
-This sets up Sci-Hub, WebVPN, and proxy settings interactively.
+Sci-Hub, WebVPN, and proxy settings are configured via MCP tools (`scansci_pdf_config_set`) or in `~/.scansci-pdf/`.
 
 ### CSD API Setup (Phase 1)
 
