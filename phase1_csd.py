@@ -171,7 +171,7 @@ def run_phase1(input_csv: Path, output_csv: Path) -> Path:
     Run Phase 1: CSD API -> DOI + unit cell.
 
     Input CSV must have these columns: name, predicted_log1p, predicted_mol_kg
-    Output CSV will add: matched_identifier, doi, a, b, c, alpha, beta, gamma, status
+    Output CSV will add: RefCode, doi, a, b, c, alpha, beta, gamma, status
     """
     from ccdc import io
 
@@ -230,7 +230,7 @@ def run_phase1(input_csv: Path, output_csv: Path) -> Path:
             "name": name,
             "predicted_log1p": row.get("predicted_log1p", ""),
             "predicted_mol_kg": row.get("predicted_mol_kg", ""),
-            "matched_identifier": matched_id or "",
+            "RefCode": matched_id or "",
             "doi": doi or "",
             "a": cell["a"], "b": cell["b"], "c": cell["c"],
             "alpha": cell["alpha"], "beta": cell["beta"], "gamma": cell["gamma"],
@@ -242,7 +242,7 @@ def run_phase1(input_csv: Path, output_csv: Path) -> Path:
 
     fieldnames = [
         "name", "predicted_log1p", "predicted_mol_kg",
-        "matched_identifier", "doi",
+        "RefCode", "doi",
         "a", "b", "c", "alpha", "beta", "gamma", "status",
     ]
     with open(output_csv, "w", encoding="utf-8", newline="") as f:

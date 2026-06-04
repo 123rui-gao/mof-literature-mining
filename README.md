@@ -97,7 +97,7 @@ python phase1_csd.py -i input.csv -o phase1_output.csv
 
 **Input columns:** name, predicted_log1p, predicted_mol_kg
 
-**Output adds:** matched_identifier, doi, a, b, c, alpha, beta, gamma, status
+**Output adds:** RefCode, doi, a, b, c, alpha, beta, gamma, status
 
 **Strategies (tried in order):**
 1. 6-letter CSD refcode lookup (e.g., AVEQID → CSD entry → DOI)
@@ -225,7 +225,7 @@ mof_literature_pipeline/
 
 ### Phase 1 Output / Phase 2 Input (CSV)
 
-Adds: matched_identifier, doi, a, b, c, alpha, beta, gamma, status
+Adds: RefCode, doi, a, b, c, alpha, beta, gamma, status
 
 ### Phase 2 Output / Phase 3 Input (CSV)
 

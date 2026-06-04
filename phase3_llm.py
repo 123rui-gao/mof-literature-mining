@@ -119,6 +119,10 @@ def run_extraction(
     else:
         df = pd.read_excel(input_path)
 
+    # Normalize column names: Phase 1 may output "matched_identifier" or "RefCode"
+    if "matched_identifier" in df.columns and "RefCode" not in df.columns:
+        df = df.rename(columns={"matched_identifier": "RefCode"})
+
     required = {"RefCode", "Main_PDF"}
     missing = required - set(df.columns)
     if missing:
