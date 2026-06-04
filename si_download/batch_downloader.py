@@ -11,11 +11,18 @@ Supported publishers:
 
 from __future__ import annotations
 
+import os
 import re
 import shutil
-import time
 import tempfile
+import time
 from pathlib import Path
+
+# Must clear proxy env vars before importing undetected_chromedriver —
+# Sangfor NDIS driver intercepts all localhost HTTP traffic otherwise
+for key in list(os.environ.keys()):
+    if "proxy" in key.lower():
+        del os.environ[key]
 
 from . import acs, rsc, wiley, elsevier as elsevier_mod
 
@@ -38,8 +45,9 @@ def doi_slug(doi: str) -> str:
 
 def download_si_files(links: dict[str, str], output_dir: Path, chrome_driver=None) -> int:
     """Download SI files. Uses Chrome XHR if driver available, else requests."""
+    import base64
+    import json
     import requests as req
-    import base64, json
 
     ok = skip = fail = 0
 
@@ -105,7 +113,7 @@ def download_si_files(links: dict[str, str], output_dir: Path, chrome_driver=Non
 
 
 def _launch_chrome(output_dir: Path):
-    """Launch undetected Chrome. Uses temp profile to avoid conflicts."""
+    """Launch undetected Chrome with temp profile — no persistent profile conflicts."""
     import undetected_chromedriver as uc
 
     tmp_profile = tempfile.mkdtemp(prefix="chrome_si_")
@@ -157,7 +165,7 @@ def _has_si_files(paper_dir: Path) -> bool:
 
 
 def _chrome_session(dois: list[str], collect_fn, publisher_name: str,
-                    papers_dir: Path) -> tuple[int, int]:
+                    papers_dir: Path) -> int:
     """Process DOIs with a single Chrome session. Auto-reconnects on failure."""
     driver = None
     total_processed = 0
@@ -204,6 +212,7 @@ def _chrome_session(dois: list[str], collect_fn, publisher_name: str,
                 print(f"        No SI links found")
             total_processed += 1
             i += 1
+            time.sleep(5)  # Delay between DOIs to avoid rate limiting
 
         except Exception as e:
             print(f"  {tag} {doi}  ERROR: {e}")
